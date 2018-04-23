@@ -46,7 +46,11 @@
     <Compile Include="Chixel.cs" />
     <Compile Include="FrameBuffer.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Ghost.cs" />
+    <Compile Include="Ghosts\Blinky.cs" />
+    <Compile Include="Ghosts\Clyde.cs" />
+    <Compile Include="Ghosts\Ghost.cs" />
+    <Compile Include="Ghosts\Inky.cs" />
+    <Compile Include="Ghosts\Pinky.cs" />
     <Compile Include="KeyHandler.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Pacman.cs" />

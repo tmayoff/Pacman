@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace PacMan {
     public class Vector2 {
 
@@ -14,6 +16,16 @@ namespace PacMan {
         public Vector2(int x, int y) {
             X = x;
             Y = y;
+        }
+
+        public static double Distance(Vector2 a, Vector2 b) {
+            double x = (double)b.X - a.X;
+            double y = (double)b.Y - a.Y;
+            return Math.Sqrt(x + y);
+        }
+
+        public override string ToString() {
+            return "(" + X + "," + Y + ")";
         }
 
         public static Vector2 operator *(Vector2 a, int b) {

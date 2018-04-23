@@ -11,6 +11,7 @@ namespace PacMan {
 
             new FrameBuffer(0, 0, 31, 150);
 
+
             while (RunGame()) {
 
             }

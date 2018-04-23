@@ -18,21 +18,17 @@ namespace PacMan {
         public override void Update() {
             base.Update();
 
-            foreach (Tile tile in Game.Instance.Tiles) {
-                if (tile.Position != (Position + Velocity)) continue;
-                switch (tile.Type) {
-                    case TileType.Wall:
-                        Velocity = Vector2.Zero;
-                        break;
-                    case TileType.Teleport:
-                        Teleport tel = tile as Teleport;
-                        Position = tel.TeleportTo.Position;
-                        break;
-                }
+            Tile nextTile = Map.Instance.GetTile(Position + Velocity);
+            switch (nextTile.Type) {
+                case TileType.Wall:
+                    Velocity = Vector2.Zero;
+                    break;
+                case TileType.Teleport:
+                    Teleport tel = nextTile as Teleport;
+                    Position = tel.TeleportTo.Position;
+                    break;
             }
 
-            //if (Velocity == Vector2.Right || Velocity == Vector2.Left)
-                //Velocity *= 2;
             Position += Velocity;
 
             FrameBuffer.Instance.SetChixel(Position, Chixel, FrameBuffer.BufferLayers.Characters);

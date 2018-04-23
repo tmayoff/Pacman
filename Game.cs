@@ -7,13 +7,14 @@ namespace PacMan {
     public class Game {
 
         private const string HIGHSCOREPATH = "./scores.txt";
-        //private const int UIWIDTH = 0;
+        private const int UIWIDTH = 0;
 
         public static Game Instance { get; set; }
 
         public List<Tile> Tiles;
         public List<Character> Characters;
 
+        public Map Map;
         public Pacman Player;
 
         public Vector2 GameArea;
@@ -36,9 +37,17 @@ namespace PacMan {
 
             _frameBuffer.Clear();
 
-            Map map = new Map();
-            Console.SetWindowSize(map.MapSize.X, map.MapSize.Y);
+            Map = new Map();
+
+            Console.SetWindowSize(Map.MapSize.X + UIWIDTH, Map.MapSize.Y);
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+
+            DrawGameArea();
+
+            //Check all tiles for neihbors
+            foreach (Tile tile in Tiles) {
+                tile.GetNeighbors(Map.Instance.Tiles);
+            }
 
             //GameArea = new Vector2(Console.WindowWidth - UIWIDTH - 1, Console.WindowHeight);
         }
@@ -66,6 +75,8 @@ namespace PacMan {
 
         private void DrawGameArea() {
             foreach (Tile tile in Tiles) {
+                if (tile.Intersection)
+                    tile.Chixel.BackgroundColor = ConsoleColor.Yellow;
                 _frameBuffer.SetChixel(tile.Position, tile.Chixel, FrameBuffer.BufferLayers.Obstacles);
             }
 
@@ -85,6 +96,18 @@ namespace PacMan {
 
         public void End() {
             RestartGame();
+        }
+
+        public Tile[,] Get2DArray(Vector2 size) {
+            Tile[,] tiles = new Tile[size.X, size.Y];
+
+            for (int i = 0; i < size.Y; i++) {
+                for (int j = 0; j < size.X; j++) {
+                    tiles[i, j] = Tiles[i * size.X + j];
+                }
+            }
+
+            return tiles;
         }
 
         private void SaveScores(string name, int score) {
