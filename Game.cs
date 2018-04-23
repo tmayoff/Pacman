@@ -43,7 +43,7 @@ namespace PacMan {
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
 
             DrawGameArea();
-
+            
             //GameArea = new Vector2(Console.WindowWidth - UIWIDTH - 1, Console.WindowHeight);
         }
 

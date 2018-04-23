@@ -1,4 +1,6 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Linq;
+
 namespace PacMan {
 
     public enum TileType { Wall, Space, Door, Teleport }
@@ -18,7 +20,7 @@ namespace PacMan {
         public TileType Type;
 
         public bool Intersection;
-
+        
         public Tile() { }
 
         public Tile(Chixel chixel, Vector2 pos, TileType type) {
@@ -26,7 +28,7 @@ namespace PacMan {
             Position = pos;
             Type = type;
         }
-
+        
         public bool IsWalkable(object unused) {
             return Type != TileType.Wall;
         }
