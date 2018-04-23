@@ -44,11 +44,6 @@ namespace PacMan {
 
             DrawGameArea();
 
-            //Check all tiles for neihbors
-            foreach (Tile tile in Tiles) {
-                tile.GetNeighbors(Map.Instance.Tiles);
-            }
-
             //GameArea = new Vector2(Console.WindowWidth - UIWIDTH - 1, Console.WindowHeight);
         }
 

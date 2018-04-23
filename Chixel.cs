@@ -9,7 +9,8 @@ namespace PacMan {
         public ConsoleColor BackgroundColor { get; set; }
         public bool Dirty { get; set; }
 
-        public Chixel(char glyph, ConsoleColor fgColor = ConsoleColor.White, ConsoleColor bgColor = ConsoleColor.Black) {
+        public Chixel(char glyph, ConsoleColor fgColor = ConsoleColor.White,
+            ConsoleColor bgColor = ConsoleColor.Black) {
             Glyph = glyph;
             ForgroundColor = fgColor;
             BackgroundColor = bgColor;
@@ -21,6 +22,10 @@ namespace PacMan {
             ForgroundColor = other.ForgroundColor;
             BackgroundColor = other.BackgroundColor;
             Dirty = true;
+        }
+
+        public override string ToString() {
+            return Glyph.ToString();
         }
     }
 }

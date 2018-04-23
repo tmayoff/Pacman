@@ -25,11 +25,11 @@ namespace PacMan {
 ##      ##    ##    ##      ##
 ####### ##### ## ##### #######
 ####### ##### ## ##### #######
-####### ##    B     ## #######
+####### ##     B    ## #######
 ####### ## ###--### ## #######
-####### ## #      # ## #######
-#T  @      # IP C #         T#
-####### ## #      # ## #######
+####### ## #!!!!!!# ## #######
+#T         #!!!!!!#         T#
+####### ## #!!!!!!# ## #######
 ####### ## ######## ## #######
 ####### ##          ## #######
 ####### ## ######## ## #######
@@ -54,6 +54,7 @@ namespace PacMan {
             Level = 0;
 
             GenerateMap();
+            GetNeighbors();
             LinkTeleports();
         }
 
@@ -71,63 +72,82 @@ namespace PacMan {
             Tiles = new Tile[MapSize.X, MapSize.Y];
 
             for (int x = 0; x < MapSize.X; x++) {
-
                 for (int y = 0; y < MapSize.Y; y++) {
+                    CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Wall);
+                }
+            }
 
-                    switch (lines[y][x]) {
-                        case 'I':
-
-                            new Inky(new Chixel('%', ConsoleColor.Cyan), new Vector2(x, y));
-                            CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Space);
-                            break;
-
+            for (int x = 0; x < MapSize.X; x++) {
+                for (int y = 0; y < MapSize.Y; y++) {
+                    char c = lines[y][x];
+                    Tile currentTile = Tiles[x, y];
+                    switch (c) {
                         case 'B':
-
-                            new Blinky(new Chixel('%', ConsoleColor.Red), new Vector2(x, y));
-                            CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Space);
+                            new Blinky(new Chixel('$', ConsoleColor.Red), new Vector2(x, y));
+                            break;
+                        case ' ':
+                            currentTile.Type = TileType.Space;
+                            break;
+                        case '#':
+                            currentTile.Chixel.BackgroundColor = ConsoleColor.Blue;
+                            currentTile.Type = TileType.Wall;
                             break;
 
-                        case 'P':
-                            new Pinky(new Chixel('%', ConsoleColor.Magenta), new Vector2(x, y));
-                            CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Space);
+                        case '-':
+                            currentTile.Type = TileType.Door;
                             break;
 
-                        case 'C':
-                            new Clyde(new Chixel('%', ConsoleColor.Yellow), new Vector2(x, y));
-                            CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Space);
-                            break;
-
-                        case ' ': {
-                                CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Space);
-                                break;
-                            }
-
-                        case '#': { //Wall
-                                Chixel ch = new Chixel(lines[y][x], ConsoleColor.Blue, ConsoleColor.Blue);
-                                CreateTile(new Vector2(x, y), ch, TileType.Wall);
-                                break;
-                            }
-
-                        case '-': {
-                                CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Door);
-                                break;
-                            }
-
-                        case 'T': { //Teleport
-                                Chixel ch = new Chixel(' ', ConsoleColor.Green);
-                                Teleport tile = new Teleport(ch, new Vector2(x, y), TileType.Teleport);
-                                FrameBuffer.Instance.SetChixel(tile.Position, tile.Chixel, FrameBuffer.BufferLayers.Obstacles);
-                                Game.Instance.Tiles.Add(tile);
-                                _teleports.Add(tile);
-                                Tiles[x, y] = tile;
-                                break;
-                            }
-
-                        case '@': //Player
-                            Game.Instance.Player = new Pacman(new Chixel('@', ConsoleColor.Yellow), new Vector2(x, y));
-                            CreateTile(new Vector2(x, y), new Chixel(' '), TileType.Door);
+                        case 'T':
+                            currentTile.Type = TileType.Teleport;
+                            currentTile.Chixel.BackgroundColor = ConsoleColor.Red;
+                            _teleports.Add(new Teleport(currentTile));
                             break;
                     }
+                }
+            }
+        }
+
+        private void GetNeighbors() {
+            for (int x = 0; x < Tiles.GetLength(0); x++) {
+                for (int y = 0; y < Tiles.GetLength(1); y++) {
+                    Tile tile = Tiles[x, y];
+                    if (tile.Type == TileType.Wall) continue;
+
+                    tile.Neighbors = new Tile[4];
+
+                    int neighbors = 0;
+
+                    Vector2 topNeighborPos = tile.Position + Vector2.Up;
+                    Tile topNeighbor = GetTile(topNeighborPos);
+                    if (topNeighbor != null && topNeighbor.Type == TileType.Space) {
+                        tile.Neighbors[0] = topNeighbor;
+                        neighbors++;
+                    }
+
+                    Vector2 rightNeighborPos = tile.Position + Vector2.Right;
+                    Tile rightNeighbor = GetTile(rightNeighborPos);
+                    if (rightNeighbor != null && rightNeighbor.Type == TileType.Space) {
+                        tile.Neighbors[1] = rightNeighbor;
+                        neighbors++;
+                    }
+
+                    Vector2 downNeighborPos = tile.Position + Vector2.Down;
+                    Tile downNeighbor = GetTile(downNeighborPos);
+                    if (downNeighbor != null && downNeighbor.Type == TileType.Space) {
+                        tile.Neighbors[2] = downNeighbor;
+                        neighbors++;
+                    }
+
+                    Vector2 leftNeighborPos = tile.Position + Vector2.Left;
+                    Tile leftNeighbor = GetTile(leftNeighborPos);
+                    if (leftNeighbor != null && leftNeighbor.Type == TileType.Space) {
+                        tile.Neighbors[3] = leftNeighbor;
+                        neighbors++;
+                    }
+
+                    tile.Intersection = neighbors >= 3;
+                    if (tile.Intersection)
+                        tile.Chixel.BackgroundColor = ConsoleColor.Green;
                 }
             }
         }
@@ -140,7 +160,11 @@ namespace PacMan {
         }
 
         public Tile GetTile(Vector2 pos) {
-            return Tiles[pos.X, pos.Y];
+            try {
+                return Tiles[pos.X, pos.Y];
+            } catch {
+                return null;
+            }
         }
     }
 }
