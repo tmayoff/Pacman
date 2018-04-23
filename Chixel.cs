@@ -22,5 +22,9 @@ namespace PacMan {
             BackgroundColor = other.BackgroundColor;
             Dirty = true;
         }
+
+        public override string ToString() {
+            return Glyph.ToString();
+        }
     }
 }
