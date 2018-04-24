@@ -9,7 +9,7 @@
 
             Game.Instance.Characters.Add(this);
 
-            Target = Map.Instance.GetTile(new Vector2(Map.Instance.MapSize.X - 3, 0));
+            Target = Map.Instance.GetTile(new Vector2(Map.Instance.MapSize.X - 4, 0));
         }
 
         public override void Update() {

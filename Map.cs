@@ -25,11 +25,11 @@ namespace PacMan {
 ##      ##    ##    ##      ##
 ####### ##### ## ##### #######
 ####### ##### ## ##### #######
-####### ##     B    ## #######
+####### ##          ## #######
 ####### ## ###--### ## #######
-####### ## #!!!!!!# ## #######
-#T         #!!P!!!#         T#
-####### ## #!!!!!!# ## #######
+####### ## #      # ## #######
+#T         #   C  #         T#
+####### ## #      # ## #######
 ####### ## ######## ## #######
 ####### ##          ## #######
 ####### ## ######## ## #######
@@ -82,6 +82,9 @@ namespace PacMan {
                     char c = lines[y][x];
                     Tile currentTile = Tiles[x, y];
                     switch (c) {
+                        case 'C':
+                            new Clyde(new Chixel('$', ConsoleColor.Cyan), new Vector2(x, y));
+                            break;
                         case 'P':
                             new Pinky(new Chixel('$', ConsoleColor.Magenta), new Vector2(x, y));
                             break;

@@ -37,7 +37,7 @@ namespace PacMan.Ghosts {
             if (CurrentTile.Intersection || NextTile.Type == TileType.Wall) {
 
                 int r;
-                if (Position.Y == 2)
+                if (Position.Y == 6)
                     r = 0;
 
                 double closest = double.MaxValue;
@@ -48,7 +48,7 @@ namespace PacMan.Ghosts {
                     if (tile == null) continue;
 
                     double dis = Vector2.Distance(tile.Position, Target.Position);
-                    if (!(dis < closest) || Tile.Directions[i] == Velocity.Opposite) continue;
+                    if ((dis >= closest) || Tile.Directions[i] == Velocity.Opposite) continue;
 
                     closest = dis;
                     if (Tile.Directions[i] != Velocity.Opposite)
