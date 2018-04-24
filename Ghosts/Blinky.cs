@@ -7,22 +7,20 @@
             Velocity = Vector2.Left;
 
             Game.Instance.Characters.Add(this);
+            Target = Map.Instance.GetTile(new Vector2(3, 0));
         }
 
         public override void Update() {
             base.Update();
 
-
-            Target = Map.Instance.GetTile(new Vector2(3, 0));
-
             //Next tile
             NextTile = Map.Instance.GetTile(Position + Velocity);
-            if (NextTile.Type == TileType.Wall)
-                Velocity = Vector2.Zero;
+            //if (NextTile.Type == TileType.Wall)
+            //    Velocity = Vector2.Zero;
 
             //Current tile
             CurrentTile = Map.Instance.GetTile(Position);
-            if (CurrentTile.Intersection) {
+            if (CurrentTile.Intersection || NextTile.Type == TileType.Wall) {
 
                 int r;
                 if (Position.Y == 2)

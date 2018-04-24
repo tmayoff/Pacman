@@ -145,7 +145,9 @@ namespace PacMan {
                         neighbors++;
                     }
 
-                    tile.Intersection = neighbors >= 3;
+                    bool vert = (tile.Neighbors[0] != null && tile.Neighbors[2] == null) || (tile.Neighbors[0] == null && tile.Neighbors[2] != null);
+                    bool hori = (tile.Neighbors[1] != null && tile.Neighbors[3] == null) || (tile.Neighbors[1] == null && tile.Neighbors[3] != null);
+                    tile.Intersection = neighbors >= 3 || (vert && hori);
                     if (tile.Intersection)
                         tile.Chixel.BackgroundColor = ConsoleColor.Green;
                 }
