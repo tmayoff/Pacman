@@ -9,12 +9,12 @@
 
             Game.Instance.Characters.Add(this);
 
-            Target = Map.Instance.GetTile(new Vector2(Map.Instance.MapSize.X - 4, 0));
+            ScatterTarget = Map.Instance.GetTile(new Vector2(Map.Instance.MapSize.X - 4, 0));
         }
 
         public override void Update() {
             base.Update();
-            
+
             Position += Velocity;
 
             FrameBuffer.Instance.SetChixel(Position, Chixel, FrameBuffer.BufferLayers.Characters);

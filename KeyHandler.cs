@@ -14,10 +14,10 @@ namespace PacMan {
             //Player Movement
             switch (key.Key) {
                 case ConsoleKey.UpArrow:
-                    Pacman.Instance.Velocity = Vector2.Down;
+                    Pacman.Instance.Velocity = Vector2.Up;
                     break;
                 case ConsoleKey.DownArrow:
-                    Pacman.Instance.Velocity = Vector2.Up;
+                    Pacman.Instance.Velocity = Vector2.Down;
                     break;
                 case ConsoleKey.LeftArrow:
                     Pacman.Instance.Velocity = Vector2.Left;

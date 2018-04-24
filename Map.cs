@@ -25,11 +25,11 @@ namespace PacMan {
 ##      ##    ##    ##      ##
 ####### ##### ## ##### #######
 ####### ##### ## ##### #######
-####### ##          ## #######
+####### ##     B    ## #######
 ####### ## ###--### ## #######
-####### ## #      # ## #######
-#T         #   C  #         T#
-####### ## #      # ## #######
+####### ## #!!!!!!# ## #######
+#T         #!IPC!!#         T#
+####### ## #!!!!!!# ## #######
 ####### ## ######## ## #######
 ####### ##          ## #######
 ####### ## ######## ## #######
@@ -82,31 +82,51 @@ namespace PacMan {
                     char c = lines[y][x];
                     Tile currentTile = Tiles[x, y];
                     switch (c) {
+                        case '@':
+                            new Pacman(new Chixel(c, ConsoleColor.Yellow), new Vector2(x, y));
+                            currentTile.Type = TileType.Space;
+                            break;
+                        case 'I':
+                            new Inky(new Chixel('$', ConsoleColor.DarkYellow), new Vector2(x, y));
+                            currentTile.Type = TileType.GhostHouse;
+                            break;
                         case 'C':
                             new Clyde(new Chixel('$', ConsoleColor.Cyan), new Vector2(x, y));
+                            currentTile.Type = TileType.Space;
                             break;
                         case 'P':
                             new Pinky(new Chixel('$', ConsoleColor.Magenta), new Vector2(x, y));
+                            currentTile.Type = TileType.GhostHouse;
                             break;
                         case 'B':
                             new Blinky(new Chixel('$', ConsoleColor.Red), new Vector2(x, y));
-                            break;
-                        case ' ':
                             currentTile.Type = TileType.Space;
                             break;
+
                         case '#':
                             currentTile.Chixel.BackgroundColor = ConsoleColor.Blue;
                             currentTile.Type = TileType.Wall;
+
+                            break;
+                        case '-':
+                            currentTile.Chixel.Glyph = c;
+                            currentTile.Type = TileType.Door;
                             break;
 
-                        case '-':
-                            currentTile.Type = TileType.Door;
+                        case '!':
+                            currentTile.Type = TileType.GhostHouse;
+                            currentTile.Chixel.Glyph = c;
                             break;
 
                         case 'T':
                             currentTile.Type = TileType.Teleport;
-                            currentTile.Chixel.BackgroundColor = ConsoleColor.Red;
-                            _teleports.Add(new Teleport(currentTile));
+                            currentTile.Chixel.BackgroundColor = ConsoleColor.Green;
+                            Teleport tel = new Teleport(currentTile);
+                            Tiles[x, y] = tel;
+                            _teleports.Add(tel);
+                            break;
+                        default:
+                            currentTile.Type = TileType.Space;
                             break;
                     }
                 }
@@ -155,10 +175,10 @@ namespace PacMan {
                     bool hori = (tile.Neighbors[1] != null && tile.Neighbors[3] == null) || (tile.Neighbors[1] == null && tile.Neighbors[3] != null);
                     tile.Intersection = neighbors >= 3;
                     tile.Corner = vert && hori;
-                    if (tile.Corner)
-                        tile.Chixel.BackgroundColor = ConsoleColor.Cyan;
-                    if (tile.Intersection)
-                        tile.Chixel.BackgroundColor = ConsoleColor.Green;
+                    //if (tile.Corner)
+                    //    tile.Chixel.BackgroundColor = ConsoleColor.Cyan;
+                    //if (tile.Intersection)
+                    //    tile.Chixel.BackgroundColor = ConsoleColor.Green;
                 }
             }
         }

@@ -31,10 +31,11 @@ namespace PacMan {
             _left = left;
             _top = top;
 
-            Clear();
+            Clear(BufferLayers.Characters);
+            Clear(BufferLayers.Obstacles);
         }
 
-        public void Clear() {
+        public void Clear(BufferLayers layer) {
             Console.Clear();
 
             _chixels = new Chixel[layerCount][,];
@@ -44,10 +45,7 @@ namespace PacMan {
         }
 
         public void DrawFrame() {
-
-            for (int i = 0; i < _chixels.Length; i++) {
-
-
+            foreach (Chixel[,] t in _chixels) {
                 for (int x = 0; x < Width; x++) {
                     //if (x < 45) continue;
                     if (x >= Console.WindowWidth)
@@ -57,7 +55,7 @@ namespace PacMan {
                         if (y >= Console.WindowHeight)
                             continue;
 
-                        Chixel ch = _chixels[i][x, y];
+                        Chixel ch = t[x, y];
 
                         if (ch != null && ch.Dirty) {
                             Console.SetCursorPosition(x + _left, y + _top);

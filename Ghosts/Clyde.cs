@@ -5,11 +5,10 @@ namespace PacMan.Ghosts {
             Chixel = chixel;
             Position = pos;
             Velocity = Vector2.Up;
-
-
-            Game.Instance.Characters.Add(this);
             
-            Target = Map.Instance.GetTile(new Vector2(3, Map.Instance.MapSize.Y - 2));
+            Game.Instance.Characters.Add(this);
+
+            ScatterTarget = Map.Instance.GetTile(new Vector2(3, Map.Instance.MapSize.Y - 2));
         }
 
         public override void Update() {

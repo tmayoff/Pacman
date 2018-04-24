@@ -9,7 +9,7 @@
 
             Game.Instance.Characters.Add(this);
 
-            Target = Map.Instance.GetTile(new Vector2(3, 0));
+            ScatterTarget = Map.Instance.GetTile(new Vector2(3, 0));
         }
 
         public override void Update() {

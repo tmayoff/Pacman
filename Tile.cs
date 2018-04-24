@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace PacMan {
 
-    public enum TileType { Wall, Space, Door, Teleport }
+    public enum TileType { Wall, Space, Door, GhostHouse, Teleport }
 
     public class Tile {
 
@@ -36,7 +36,7 @@ namespace PacMan {
         }
 
         public override string ToString() {
-            return Type.ToString();
+            return Type + " at: " + Position;
         }
     }
 }

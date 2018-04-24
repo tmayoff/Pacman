@@ -35,7 +35,9 @@ namespace PacMan {
             Console.Clear();
             Console.CursorVisible = false;
 
-            _frameBuffer.Clear();
+
+            _frameBuffer.Clear(FrameBuffer.BufferLayers.Characters);
+            _frameBuffer.Clear(FrameBuffer.BufferLayers.Obstacles);
 
             Map = new Map();
 
@@ -59,7 +61,7 @@ namespace PacMan {
 
             FrameBuffer.Instance.DrawFrame();
 
-            Thread.Sleep(25);
+            Thread.Sleep(20);
 
             return true;
         }
@@ -69,7 +71,7 @@ namespace PacMan {
         }
 
         private void DrawGameArea() {
-            foreach (Tile tile in Tiles) {
+            foreach (Tile tile in Map.Instance.Tiles) {
                 _frameBuffer.SetChixel(tile.Position, tile.Chixel, FrameBuffer.BufferLayers.Obstacles);
             }
 

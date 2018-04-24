@@ -23,6 +23,9 @@ namespace PacMan {
                 case TileType.Wall:
                     Velocity = Vector2.Zero;
                     break;
+                case TileType.Door:
+                    Velocity = Vector2.Zero;
+                    break;
                 case TileType.Teleport:
                     Teleport tel = nextTile as Teleport;
                     Position = tel.TeleportTo.Position;

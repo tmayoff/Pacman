@@ -1,10 +1,14 @@
 ﻿
+using System.Threading;
+
 namespace PacMan.Ghosts {
     public class Ghost : Character {
 
         public Tile Target;
         public Tile CurrentTile;
         public Tile NextTile;
+
+        public Tile ScatterTarget;
 
         public Vector2 Velocity;
 
@@ -20,26 +24,23 @@ namespace PacMan.Ghosts {
         public override void Update() {
             base.Update();
 
-            if (Target == null) return;
+            if (ScatterTarget != null)
+                ScatterTarget.Chixel.BackgroundColor = Chixel.ForgroundColor;
 
-            Target.Chixel.BackgroundColor = Chixel.ForgroundColor;
-            Scatter();
-        }
-
-        private void Chase() { }
-
-        private void Scatter() {
             //Next tile
             NextTile = Map.Instance.GetTile(Position + Velocity);
 
-            //Current tile
             CurrentTile = Map.Instance.GetTile(Position);
+            if (CurrentTile.Type == TileType.GhostHouse)
+                EscapeGhostHouse();
+            else
+                Scatter();
+
+            Move();
+        }
+
+        private void Move() {
             if (CurrentTile.Intersection || NextTile.Type == TileType.Wall) {
-
-                int r;
-                if (Position.Y == 6)
-                    r = 0;
-
                 double closest = double.MaxValue;
                 Vector2 newDirection = Vector2.Zero;
 
@@ -51,12 +52,33 @@ namespace PacMan.Ghosts {
                     if ((dis >= closest) || Tile.Directions[i] == Velocity.Opposite) continue;
 
                     closest = dis;
+
                     if (Tile.Directions[i] != Velocity.Opposite)
                         newDirection = Tile.Directions[i];
                 }
 
                 Velocity = newDirection;
             }
+        }
+
+        private void EscapeGhostHouse() {
+            bool foundDoor = false;
+            foreach (Tile tile in CurrentTile.Neighbors) {
+                if (tile?.Type != TileType.Door) continue;
+                Target = tile;
+                foundDoor = true;
+            }
+
+            if (!foundDoor) {
+                Target = Map.Instance.GetTile(Position + Vector2.Up);
+            }
+        }
+
+        private void Chase() { }
+
+        private void Scatter() {
+            if (ScatterTarget != null)
+                Target = ScatterTarget;
         }
 
         private void Frightened() { }
