@@ -28,7 +28,7 @@ namespace PacMan {
 ####### ##     B    ## #######
 ####### ## ###--### ## #######
 ####### ## #!!!!!!# ## #######
-#T         #!!!!!!#         T#
+#T         #!!P!!!#         T#
 ####### ## #!!!!!!# ## #######
 ####### ## ######## ## #######
 ####### ##          ## #######
@@ -82,6 +82,9 @@ namespace PacMan {
                     char c = lines[y][x];
                     Tile currentTile = Tiles[x, y];
                     switch (c) {
+                        case 'P':
+                            new Pinky(new Chixel('$', ConsoleColor.Magenta), new Vector2(x, y));
+                            break;
                         case 'B':
                             new Blinky(new Chixel('$', ConsoleColor.Red), new Vector2(x, y));
                             break;
@@ -147,7 +150,10 @@ namespace PacMan {
 
                     bool vert = (tile.Neighbors[0] != null && tile.Neighbors[2] == null) || (tile.Neighbors[0] == null && tile.Neighbors[2] != null);
                     bool hori = (tile.Neighbors[1] != null && tile.Neighbors[3] == null) || (tile.Neighbors[1] == null && tile.Neighbors[3] != null);
-                    tile.Intersection = neighbors >= 3 || (vert && hori);
+                    tile.Intersection = neighbors >= 3;
+                    tile.Corner = vert && hori;
+                    if (tile.Corner)
+                        tile.Chixel.BackgroundColor = ConsoleColor.Cyan;
                     if (tile.Intersection)
                         tile.Chixel.BackgroundColor = ConsoleColor.Green;
                 }

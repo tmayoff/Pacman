@@ -43,7 +43,7 @@ namespace PacMan {
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
 
             DrawGameArea();
-            
+
             //GameArea = new Vector2(Console.WindowWidth - UIWIDTH - 1, Console.WindowHeight);
         }
 
@@ -70,8 +70,6 @@ namespace PacMan {
 
         private void DrawGameArea() {
             foreach (Tile tile in Tiles) {
-                if (tile.Intersection)
-                    tile.Chixel.BackgroundColor = ConsoleColor.Yellow;
                 _frameBuffer.SetChixel(tile.Position, tile.Chixel, FrameBuffer.BufferLayers.Obstacles);
             }
 

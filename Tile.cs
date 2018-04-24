@@ -20,15 +20,17 @@ namespace PacMan {
         public TileType Type;
 
         public bool Intersection;
-        
+        public bool Corner;
+
         public Tile() { }
 
         public Tile(Chixel chixel, Vector2 pos, TileType type) {
             Chixel = chixel;
             Position = pos;
             Type = type;
+            Neighbors = new Tile[4];
         }
-        
+
         public bool IsWalkable(object unused) {
             return Type != TileType.Wall;
         }
